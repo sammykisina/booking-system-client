@@ -1,9 +1,11 @@
 import React from 'react';
 import type { FC, ReactNode } from 'react';
-import { Icon, TabTitle } from '@/components';
-import { HiDocumentText, HiQueueList, HiUserGroup } from 'react-icons/hi2';
+import { Icon, TabTitle, Table } from '@/components';
+import { HiDocumentText, HiUserGroup } from 'react-icons/hi2';
 import { appAtoms } from '@/atoms';
 import { useRecoilValue } from 'recoil';
+import { useAuth, useClient, useTravel } from '@/hooks';
+import { isSameMonth } from 'date-fns';
 
 type AdminDashboardCardProps = {
   title: string;
@@ -85,6 +87,22 @@ const AdminDashboard = () => {
    */
   const { isSidebarOpenState } = appAtoms;
   const isSidebarOpen = useRecoilValue(isSidebarOpenState);
+  const { ticketColumns, modifyTicketsDataForTicketsTable } = useAuth();
+  const { tickets } = useTravel();
+  const { clients } = useClient();
+  const clientsLastMonth = clients?.filter((client) =>
+    isSameMonth(
+      new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+      new Date(client?.attributes?.joinedAt)
+    )
+  )?.length;
+
+  const bookingsLastMonth = tickets?.filter((ticket) =>
+    isSameMonth(
+      new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+      new Date(ticket?.attributes?.createdAt)
+    )
+  )?.length;
 
   /**
    * page functions
@@ -103,9 +121,9 @@ const AdminDashboard = () => {
           {/* users */}
           <AdminDashboardCard
             icon={<HiUserGroup className='icon' />}
-            numberOfCountLastMonth={10}
+            numberOfCountLastMonth={clientsLastMonth!}
             title='Users'
-            totalCount={20}
+            totalCount={clients?.length!}
             bgColor='bg-callToAction/50'
             textColor='text-callToAction'
           />
@@ -113,14 +131,25 @@ const AdminDashboard = () => {
           {/* bookings */}
           <AdminDashboardCard
             title='Bookings'
-            totalCount={30}
+            totalCount={tickets?.length!}
             icon={<HiDocumentText className='icon' />}
-            numberOfCountLastMonth={40}
+            numberOfCountLastMonth={bookingsLastMonth!}
             bgColor='bg-amber-500/50'
             textColor='text-amber-500'
           />
         </section>
       </div>
+
+      <section className='mt-2 flex flex-col gap-3'>
+        <TabTitle title='RESENT 10 BOOKINGS' />
+
+        <Table
+          data={modifyTicketsDataForTicketsTable(tickets?.slice(1, 10))}
+          columns={ticketColumns}
+          showFilters={true}
+          tableHeight='h-[16rem] xs:h-[16rem]'
+        />
+      </section>
     </section>
   );
 };

@@ -17,8 +17,8 @@ export { default as Select } from './UI/Select';
 export { default as Tab } from './UI/tab/Tab';
 export { default as Link } from './UI/Link';
 export { default as Table } from './UI/table/Table';
-// export { default as Widget } from './UI/widget/Widget';
-// export { default as Modal } from './UI/modal/Modal';
+export { default as Widget } from './UI/widget/Widget';
+export { default as Modal } from './UI/modal/Modal';
 
 /**
  * Dropdown components
@@ -60,9 +60,9 @@ export { default as GlobalFilter } from './UI/table/filters/GlobalFilter';
 /**
  * Widget components
  */
-// export { default as WidgetHeader } from './UI/widget/WidgetHeader';
-// export { default as WidgetClose } from './UI/widget/WidgetClose';
-// export { default as CreateOrEditEmployee } from './UI/widget/components/CreateOrEditEmployee';
+export { default as WidgetHeader } from './UI/widget/WidgetHeader';
+export { default as WidgetClose } from './UI/widget/WidgetClose';
+export { default as BookTicket } from './UI/widget/components/BookTicket';
 // export { default as CreateOrEditCategory } from './UI/widget/components/CreateOrEditCategory';
 // export { default as CreateOrEditProduct } from './UI/widget/components/CreateOrEditProduct';
 // export { default as CreateOrEditShift } from './UI/widget/components/CreateOrEditShift';
@@ -71,11 +71,9 @@ export { default as GlobalFilter } from './UI/table/filters/GlobalFilter';
 /**
  * modal components
 //  */
-// export { default as ModalClose } from './UI/modal/ModalClose';
-// export { default as ModalHeader } from './UI/modal/ModalHeader';
-// export { default as DeleteEmployeeConfirmation } from './UI/modal/components/DeleteEmployeeConfirmation';
-// export { default as DeleteCategoryConfirmation } from './UI/modal/components/DeleteCategoryConfirmation';
-// export { default as DeleteProductConfirmation } from './UI/modal/components/DeleteProductConfirmation';
+export { default as ModalClose } from './UI/modal/ModalClose';
+export { default as ModalHeader } from './UI/modal/ModalHeader';
+export { default as BookTicketConfirmation } from './UI/modal/components/BookTicketConfirmation';
 /**
  * reusable
  */

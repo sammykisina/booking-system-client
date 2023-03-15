@@ -86,7 +86,7 @@
   }
 
   .widget {
-    @apply relative h-fit max-w-[500px] overflow-clip rounded-tl-[2rem] bg-white;
+    @apply relative h-fit max-w-[500px] overflow-clip rounded-tl-[2rem] bg-primary;
   }
 
   /* modal */
@@ -99,6 +99,6 @@
   }
 
   .modal {
-    @apply relative h-fit max-w-[400px] overflow-clip rounded-3xl bg-white;
+    @apply relative h-fit max-w-[400px] overflow-clip rounded-3xl bg-primary;
   }
 }

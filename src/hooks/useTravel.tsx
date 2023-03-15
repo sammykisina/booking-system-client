@@ -1,15 +1,29 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks';
 import { TravelAPI } from '@/api';
-import { Journey } from '../types/typings.t';
+import {
+  Journey,
+  SelectionOption,
+  Ticket,
+  TicketsData,
+} from '../types/typings.t';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
+import { Toasts } from '@/components';
+import ticketAtoms from '../atoms/Ticket';
+import { useSetRecoilState } from 'recoil';
 
 const useTravel = () => {
   /**
    * hook states
    */
   const { user } = useAuth();
+  const { globalJourneyInfoState, showBookTicketConfirmationModalState } =
+    ticketAtoms;
+  const setGlobalJourneyInfo = useSetRecoilState(globalJourneyInfoState);
+  const setShowBookTicketConfirmationModal = useSetRecoilState(
+    showBookTicketConfirmationModalState
+  );
   const journeysColumns = useMemo<
     ColumnDef<{
       departure: string;
@@ -91,6 +105,19 @@ const useTravel = () => {
     },
   });
 
+  const { data: tickets, isLoading: isFetchingTickets } = useQuery({
+    queryKey: ['tickets', user?.role],
+    queryFn: async ({ queryKey }) => {
+      const [_, role] = queryKey;
+
+      if (role === 'admin') {
+        return (await TravelAPI.getTickets()) as Ticket[];
+      }
+
+      return [];
+    },
+  });
+
   const modifyJourneysForJourneysTable = (journeys: Journey[] | undefined) => {
     let modifiedJourneysData = [] as unknown[];
 
@@ -111,6 +138,50 @@ const useTravel = () => {
     return modifiedJourneysData;
   };
 
+  const generateJourneyOptions = (journeys: Journey[] | undefined) => {
+    let journeyOptions = [] as unknown[];
+
+    journeys?.map((journey) => {
+      journeyOptions = [
+        ...journeyOptions,
+        {
+          name:
+            `From ` +
+            journey?.attributes?.departure +
+            ` to ` +
+            journey?.attributes?.destination +
+            ` on ` +
+            journey?.attributes?.dayOfWeek +
+            ` @ ` +
+            journey?.attributes?.startTime,
+          value: journey?.id,
+          price: journey?.attributes?.price,
+          journeyTime: journey?.attributes?.journeyTime,
+        },
+      ];
+    });
+
+    return journeyOptions as SelectionOption[];
+  };
+
+  const { mutateAsync: createTicketMutateAsync, isLoading: isCreatingTicket } =
+    useMutation({
+      mutationFn: (newTicketData: TicketsData) => {
+        return TravelAPI.createTicket(newTicketData);
+      },
+
+      onSuccess: async (data) => {
+        setGlobalJourneyInfo(null);
+        setShowBookTicketConfirmationModal(false);
+        Toasts.successToast(data.message);
+      },
+
+      onError: async () => {
+        setGlobalJourneyInfo(null);
+        setShowBookTicketConfirmationModal(false);
+      },
+    });
+
   return {
     busTravels,
     isFetchingBusTravels,
@@ -120,6 +191,11 @@ const useTravel = () => {
     isFetchingTrainTravels,
     airTravels,
     isFetchingAirTravels,
+    generateJourneyOptions,
+    createTicketMutateAsync,
+    isCreatingTicket,
+    isFetchingTickets,
+    tickets,
   };
 };
 

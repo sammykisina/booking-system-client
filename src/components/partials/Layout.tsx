@@ -1,8 +1,15 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Toaster } from 'react-hot-toast';
-import { appAtoms } from '@/atoms';
+import { appAtoms, ticketAtoms } from '@/atoms';
 import { AppRouters } from '@/routers';
-import { Sidebar, TopHeader } from '@/components';
+import {
+  BookTicket,
+  BookTicketConfirmation,
+  Modal,
+  Sidebar,
+  TopHeader,
+  Widget,
+} from '@/components';
 import { useAuth } from '@/hooks';
 
 const Layout = () => {
@@ -13,6 +20,17 @@ const Layout = () => {
   const showSidebar = useRecoilValue(showSidebarState);
   const isSidebarOpen = useRecoilValue(isSidebarOpenState);
   const { user } = useAuth();
+  const {
+    showBookTicketWidgetState,
+    globalTravelMeansState,
+    showBookTicketConfirmationModalState,
+  } = ticketAtoms;
+  const [showBookTicketWidget, setShowBookTicketWidget] = useRecoilState(
+    showBookTicketWidgetState
+  );
+  const showBookTicketConfirmationModal = useRecoilValue(
+    showBookTicketConfirmationModalState
+  );
 
   /**
    * component functions
@@ -41,6 +59,18 @@ const Layout = () => {
           <AppRouters />
         </div>
       </div>
+
+      <Widget
+        widgetState={showBookTicketWidget}
+        component={<BookTicket />}
+        widgetStyles='w-[90vw] h-fit'
+      />
+
+      <Modal
+        component={<BookTicketConfirmation />}
+        modalState={showBookTicketConfirmationModal}
+        modalStyles='w-[90vw]  duration-300'
+      />
     </section>
   );
 };

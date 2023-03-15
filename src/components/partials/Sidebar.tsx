@@ -19,8 +19,8 @@ const Sidebar = () => {
   const setShowSidebar = useSetRecoilState(showSidebarState);
   const { logout, user } = useAuth();
   const { pathname } = useLocation();
-  const { adminRoutes } = routers;
-  const routes: Route[] = user?.role === 'admin' ? adminRoutes : [];
+  const { adminRoutes, userRoutes } = routers;
+  const routes: Route[] = user?.role === 'admin' ? adminRoutes : userRoutes;
 
   /**
    * component functions

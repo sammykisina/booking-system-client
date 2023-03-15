@@ -1,32 +1,12 @@
 import {
   HiSquares2X2,
   HiOutlineSquares2X2,
-  HiChartPie,
-  HiOutlineChartPie,
-  HiClipboard,
-  HiOutlineClipboard,
-  HiArrowUpOnSquareStack,
-  HiOutlineArrowUpOnSquareStack,
-  HiOutlineAdjustmentsVertical,
-  HiAdjustmentsVertical,
-  HiOutlineCircleStack,
-  HiCircleStack,
-  HiPaperAirplane,
-  HiOutlinePaperAirplane,
   HiUserGroup,
   HiOutlineUserGroup,
-  HiBell,
-  HiOutlineBell,
-  HiLightBulb,
-  HiOutlineLightBulb,
-  HiStopCircle,
-  HiOutlineStopCircle,
-  HiUser,
-  HiOutlineUser,
-  HiShoppingBag,
-  HiOutlineShoppingBag,
   HiOutlineDocumentText,
   HiDocumentText,
+  HiOutlineTicket,
+  HiTicket,
 } from 'react-icons/hi2';
 
 const adminRoutes = [
@@ -56,8 +36,21 @@ const adminRoutes = [
   },
 ];
 
-const userRoutes = [{}];
+const userRoutes = [
+  {
+    name: 'Book',
+    inactiveIcon: <HiOutlineSquares2X2 className='icon' />,
+    activeIcon: <HiSquares2X2 className='icon' />,
+    to: '/',
+  },
+  {
+    name: 'My Tickets',
+    inactiveIcon: <HiOutlineTicket className='icon' />,
+    activeIcon: <HiTicket className='icon' />,
+    to: '/my-tickets',
+  },
+];
 
-const routes = { adminRoutes };
+const routes = { adminRoutes, userRoutes };
 
 export default routes;

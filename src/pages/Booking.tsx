@@ -1,36 +1,28 @@
-import { useClient } from '@/hooks';
 import { SpinnerLoader, TabTitle, Table } from '@/components';
+import { useAuth, useTravel } from '@/hooks';
 
-const Clients = () => {
+const Booking = () => {
   /**
-   * page states
+   * component states
    */
-  const {
-    clients,
-    isFetchingClients,
-    modifyClientsDataForClientsTable,
-    clientColumns,
-  } = useClient();
-  console.log('clients', clients);
+  const { ticketColumns, modifyTicketsDataForTicketsTable } = useAuth();
+  const { isFetchingTickets, tickets } = useTravel();
 
-  /**
-   * page functions
-   */
   return (
     <section className='h-full xs:h-[34.5rem] lg:h-[39rem]'>
       {/* title */}
-      <TabTitle title='YOUR CLIENTS' />
+      <TabTitle title='ALL BOOKINGS' />
 
       {/* the  body */}
       <section className='mt-5'>
-        {isFetchingClients ? (
+        {isFetchingTickets ? (
           <div className='flex h-[15rem]  items-center justify-center'>
             <SpinnerLoader color='fill-callToAction' />
           </div>
         ) : (
           <Table
-            data={modifyClientsDataForClientsTable(clients)}
-            columns={clientColumns}
+            data={modifyTicketsDataForTicketsTable(tickets)}
+            columns={ticketColumns}
             showFilters={true}
             tableHeight='h-[39rem] xs:h-[32.5rem]'
           />
@@ -40,4 +32,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default Booking;

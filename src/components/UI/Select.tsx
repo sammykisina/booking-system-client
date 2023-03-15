@@ -14,7 +14,6 @@ interface SelectProps {
   setSelected: any;
   title?: string;
   selectWrapperStyles: string;
-  selectLabelStyles?: string;
   options: SelectionOption[] | string[];
   multiple: boolean;
   selectPanelStyles: string;
@@ -29,7 +28,6 @@ const Select: FC<SelectProps> = ({
   multiple,
   selectWrapperStyles,
   selectPanelStyles,
-  selectLabelStyles,
   disable,
 }) => {
   /**
@@ -65,15 +63,15 @@ const Select: FC<SelectProps> = ({
 
     if (Array.isArray(selected)) {
       checkIfOptionIsInSelectedArray(option)
-        ? (activeOptionStyles = 'bg-secondary/10')
+        ? (activeOptionStyles = 'bg-callToAction/10')
         : '';
     } else {
       typeof option === 'object'
         ? option?.name.toLowerCase() === selected.name.toLowerCase()
-          ? (activeOptionStyles = 'bg-secondary/10')
+          ? (activeOptionStyles = 'bg-callToAction/10')
           : ''
         : option.toLowerCase() === selected.toLowerCase()
-        ? (activeOptionStyles = 'bg-secondary/10')
+        ? (activeOptionStyles = 'bg-callToAction/10')
         : '';
     }
 
@@ -142,9 +140,9 @@ const Select: FC<SelectProps> = ({
 
         {/* indicator icon */}
         <span
-          className={`flex items-center justify-center rounded-full duration-300  hover:bg-secondary hover:text-white ${
+          className={`flex items-center justify-center rounded-full duration-300  hover:bg-callToAction hover:text-white ${
             isSelectPanelOpen &&
-            'rotate-180 rounded-full  bg-secondary text-white'
+            'rotate-180 rounded-full  bg-callToAction text-white'
           }  ${disable && 'hidden'}`}
         >
           <HiChevronDown className='h-4 w-4' />
@@ -167,7 +165,7 @@ const Select: FC<SelectProps> = ({
               setIsSelectPanelOpen(false);
             }}
             key={option_index}
-            className={`w-fit rounded-full px-2 py-1  capitalize  hover:bg-secondary/10  hover:font-normal hover:text-textColor ${getActiveOptionClass(
+            className={`w-fit rounded-full px-2 py-1  capitalize  hover:bg-callToAction/10  hover:font-normal hover:text-textColor ${getActiveOptionClass(
               option || ''
             )}`}
           >

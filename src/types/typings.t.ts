@@ -13,6 +13,18 @@ export type User = {
   id: number;
   email: string;
   role: string;
+  name: string;
+};
+
+export type Ticket = {
+  id: number;
+  attributes: {
+    ticketNumber: string;
+    journey: string;
+    price: number;
+    means: string;
+    createdAt: string;
+  };
 };
 
 export type Client = {
@@ -21,6 +33,9 @@ export type Client = {
     name: string;
     email: string;
     joinedAt: string;
+  };
+  relationships: {
+    tickets: Ticket[];
   };
 };
 
@@ -41,6 +56,21 @@ export type Route = {
   activeIcon?: ReactNode;
   name?: string;
   to: string;
+};
+
+export type SelectionOption = {
+  name: string;
+  value: string;
+  price?: number;
+  journeyTime?: string;
+};
+
+export type TicketsData = {
+  journey: string;
+  price: number;
+  user_id: number;
+  numberOfTotalTickets: number;
+  means: string;
 };
 
 type ObjKeyof<T> = T extends object ? keyof T : never;

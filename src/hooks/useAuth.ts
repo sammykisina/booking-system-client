@@ -1,10 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useState, useEffect, useMemo } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthAPI } from '@/api';
 import Cookies from 'js-cookie';
 import { Toasts } from '@/components';
 import { useNavigate } from 'react-router-dom';
-import { UserData as LoginData, RegisterData, User } from '../types/typings.t';
+import {
+  Client,
+  UserData as LoginData,
+  RegisterData,
+  Ticket,
+  User,
+} from '../types/typings.t';
+import { ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
 
 const useAuth = () => {
   /**
@@ -13,10 +21,37 @@ const useAuth = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [token, setToken] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
+  const ticketColumns = useMemo<
+    ColumnDef<{ name: string; email: string; joinedAt: string }>[]
+  >(
+    () => [
+      {
+        header: 'Ticket Number',
+        accessorKey: 'ticketNumber',
+      },
+      {
+        header: 'Booked At',
+        accessorKey: 'bookedAt',
+      },
+      {
+        header: 'Journey',
+        accessorKey: 'journey',
+      },
+      {
+        header: 'Means',
+        accessorKey: 'means',
+      },
+      {
+        header: 'Price',
+        accessorKey: 'price',
+      },
+    ],
+    []
+  );
+
   /**
    * hook functions
    */
-
   const { mutateAsync: loginMutateAsync, isLoading: isLogging } = useMutation({
     mutationFn: (loginData: LoginData) => {
       return AuthAPI.login(loginData);
@@ -47,6 +82,41 @@ const useAuth = () => {
         Toasts.successToast(data.message);
       },
     });
+
+  const { data: profile, isLoading: isFetchingProfile } = useQuery({
+    queryKey: ['profile', user?.role],
+    queryFn: async ({ queryKey }) => {
+      const [_, role, userId] = queryKey;
+
+      if (role === 'admin' || role === 'user') {
+        return (await AuthAPI.getProfile(user?.id!)) as Client;
+      }
+
+      return [];
+    },
+  });
+
+  const modifyTicketsDataForTicketsTable = (tickets: Ticket[] | undefined) => {
+    let modifiedTicketData = [] as unknown[];
+
+    tickets?.map((ticket) => {
+      modifiedTicketData = [
+        ...modifiedTicketData,
+        {
+          journey: ticket?.attributes?.journey,
+          means: ticket?.attributes?.means,
+          price: ticket?.attributes?.price,
+          ticketNumber: ticket?.attributes?.ticketNumber,
+          bookedAt: format(
+            new Date(ticket?.attributes?.createdAt),
+            'EE, MMM d, yyy'
+          ),
+        },
+      ];
+    });
+
+    return modifiedTicketData;
+  };
 
   // const {
   //   mutateAsync: updatePasswordMutateAsync,
@@ -100,6 +170,10 @@ const useAuth = () => {
     // signupMutateAsync,
     isRegisteringUser,
     registerUserMutateAsync,
+    profile,
+    isFetchingProfile,
+    ticketColumns,
+    modifyTicketsDataForTicketsTable,
   };
 };
 

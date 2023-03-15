@@ -3,3 +3,7 @@ export { default as Register } from './auth/Register';
 export { default as AdminDashboard } from './AdminDashboard';
 export { default as Clients } from './Clients';
 export { default as Journeys } from './Journeys';
+export { default as NormalUserHome } from './NormalUserHome';
+export { default as MyTickets } from './MyTickets';
+export { default as Hero } from './Hero';
+export { default as Booking } from './Booking';

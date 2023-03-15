@@ -11,7 +11,8 @@ const navlinkStyles = cva(
     variants: {
       type: {
         medium: 'h-[40px] gap-[8px] px-[16px] text-[16px] py-2 ',
-        large: 'h-[56px] gap-[8px] px-[20px] text-2xl    py-2',
+        large:
+          'h-[56px] gap-[8px] px-[20px] text-2xl bg-callToAction text-white py-2',
         link: 'h-[38px] gap-[6px] text-[14px] px-4 hover:bg-callToAction hover:text-white  py-2 text-gray-900 font-bold justify-center',
       },
       fullWidth: {

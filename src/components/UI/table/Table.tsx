@@ -136,7 +136,7 @@ const Table = ({
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className='text-dark/80 w-[325px] max-w-[325px] truncate whitespace-nowrap px-6 py-2 text-sm font-semibold first-letter:capitalize hover:break-words'
+                      className='text-dark/80 w-[400px]  truncate whitespace-nowrap px-6 py-2 text-sm font-semibold first-letter:capitalize hover:break-words'
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

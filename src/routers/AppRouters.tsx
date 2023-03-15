@@ -1,7 +1,17 @@
 import { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '@/hooks';
-import { AdminDashboard, Clients, Journeys, Login, Register } from '@/pages';
+import {
+  AdminDashboard,
+  Booking,
+  Clients,
+  Hero,
+  Journeys,
+  Login,
+  MyTickets,
+  NormalUserHome,
+  Register,
+} from '@/pages';
 
 const AppRouters = () => {
   /**
@@ -19,9 +29,9 @@ const AppRouters = () => {
             {role === 'admin' ? (
               <AdminDashboard />
             ) : role === 'user' ? (
-              'normal user'
+              <NormalUserHome />
             ) : (
-              'login'
+              <Hero />
             )}
           </Suspense>
         }
@@ -63,14 +73,23 @@ const AppRouters = () => {
         }
       />
 
-      {/* <Route
-        path='/cart'
+      <Route
+        path='/my-tickets'
         element={
           <Suspense fallback='loading'>
-            <Cart />
+            <MyTickets />
           </Suspense>
         }
-      /> */}
+      />
+
+      <Route
+        path='/bookings'
+        element={
+          <Suspense fallback='loading'>
+            <Booking />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 };
